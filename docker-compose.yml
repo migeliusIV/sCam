@@ -1,0 +1,15 @@
+services:
+  smart-recorder:
+    build: .
+    container_name: smart-video-recorder
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data/buffer:/app/data/buffer
+      - ./data/permanent:/app/data/permanent
+    devices:
+      - "/dev/video0:/dev/video0"
+    group_add:
+      - video  
+    # для устранения ошибки по камере
+    privileged: true  # Убираем
