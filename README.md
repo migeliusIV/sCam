@@ -14,7 +14,7 @@ stateDiagram
 
     state Work {
         autorun_script --> display_off
-        display_off --> observation
+        display_off --> last_state
         
         observation --> mortal_danger_signal
         observation --> tail_signal
@@ -22,12 +22,21 @@ stateDiagram
         
         statistic --> observation
         # observation-->poweroff
-    
+
+        state observation {
+            last_state --> regular_observe
+            last_state --> attentively_observe
+            regular_observe 
+            attentively_observe
+        }
+
         state tail_alarm {
             tail_signal --> display_spotter 
             # at half - photo with statistic, at half - real time grab
-            display_spotter --> archiving_all_chunks
-            archiving_all_chunks --> high_quality_obs
+            display_spotter --> spotter_info_usb_save
+            spotter_info_usb_save --> all_chunks_usb_save
+            # we are predicting change of cars 
+            all_chunks_usb_save --> high_quality_obs
             # permanent saving
             high_quality_obs --> poweroff
         }
@@ -51,3 +60,5 @@ stateDiagram
         poweroff
     }
 ```
+### BPMN
+![Описание процесса](assets/bpmn.png)
